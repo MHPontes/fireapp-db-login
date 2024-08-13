@@ -1,25 +1,11 @@
-import logo from './logo.svg';
-import './App.css';
+import { BrowserRouter } from "react-router-dom";    // Importando o BrowserRouter para utilizar as rotas da aplicação 
+import RoutesApp from "./routes";    // Importando o componente RoutesApp que contém as rotas da aplicação
 
-function App() {
+
+export default function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <BrowserRouter>     {/* Utilizando o BrowserRouter para englobar as rotas da aplicação */}
+      <RoutesApp />     {/* Utilizando o componente RoutesApp que contém as rotas da aplicação */}
+    </BrowserRouter>
   );
 }
-
-export default App;
