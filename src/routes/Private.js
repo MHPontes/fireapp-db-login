@@ -12,7 +12,7 @@ export default function Private({ children }) {
   useEffect(() => {
     //Usando UseEffect pois com o useEffect, podemos fazer a verificação de login do usuário assim que a página for carregada.
     async function checkLogin() {
-      const unsub = onAuthStateChanged(auth, (user) => {
+      onAuthStateChanged(auth, (user) => {
         //onAuthStateChanged é um método que verifica se o usuário está logado ou não, e retorna um objeto com as informações do usuário.
 
         if (user) {
