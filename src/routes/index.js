@@ -4,6 +4,8 @@ import Home from "../pages/Home";
 import Register from "../pages/Register";
 import Admin  from "../pages/Admin";
 
+import Private from "./Private";
+
 
 
 function RoutesApp() {
@@ -12,7 +14,7 @@ function RoutesApp() {
     <Routes>
       <Route path="/" element={<Home />} /> {/* Rotas */}
       <Route path="/register" element={<Register />} />
-      <Route path="/admin" element={<Admin />} />
+      <Route path="/admin" element={<Private> <Admin /> </Private>} />   {/* Envolvendo Admin, para proteger a rota */}
     </Routes>
   );
 }
