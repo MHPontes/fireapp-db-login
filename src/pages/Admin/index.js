@@ -1,49 +1,87 @@
 import { useState, useEffect } from "react";
 import { auth, db } from "../../firebaseConnection";
-import { collection, addDoc } from "firebase/firestore";
+import {
+  collection,
+  addDoc,
+  onSnapshot,
+  query,
+  orderBy,
+  where,
+} from "firebase/firestore";
 import { signOut } from "firebase/auth";
 import "./admin.css";
 
 export default function Admin() {
-  const [tarefaInput, setTarefaInput] = useState("");    //useState para armazenar o valor do input de tarefa
-  const [user, setUser] = useState("");    //useState para armazenar o id do usuário
+  const [tarefaInput, setTarefaInput] = useState(""); //useState para armazenar o valor do input de tarefa
+  const [user, setUser] = useState(""); //useState para armazenar o id do usuário
 
-  useEffect(() => {   //useEffect é um hook que executa uma função sempre que o componente é renderizado 
-    
-    async function loadTarefas() {   
-      const userDetail = localStorage.getItem("@detailUser");   //Pegando o id do usuário no localStorage
-      setUser(JSON.parse(userDetail));   //Setando o id do usuário no useState user
+  const [tarefas, setTarefas] = useState([]); //useState para armazenar as tarefas do usuário em lista
+
+  useEffect(() => {
+    //useEffect é um hook que executa uma função sempre que o componente é renderizado
+
+    async function loadTarefas() {
+      const userDetail = localStorage.getItem("@detailUser"); //Pegando o id do usuário no localStorage
+      setUser(JSON.parse(userDetail)); //Setando o id do usuário no useState user
+
+      if (userDetail) {
+        const data = JSON.parse(userDetail);
+
+        const tarefasRef = collection(db, "tarefas"); //Referência da coleção tarefas
+        
+        const q = query(
+          tarefasRef,
+          where("userUid", "==", data?.uid), //Query para filtrar as tarefas do usuário logado
+          orderBy("created", "desc") //Ordenando as tarefas pela data de criação
+        );
+
+        const unsub = onSnapshot (q, (snapshot) => {      //onSnapshot é um método que escuta as mudanças em tempo real no banco de dados e executa uma função sempre que há uma mudança
+          let listaTarefas = []; //Criando uma lista vazia para armazenar as tarefas
+
+          snapshot.forEach((doc) => {    //forEach é um método que percorre cada documento da coleção 
+            listaTarefas.push({
+              id: doc.id, //Adicionando o id do documento na lista
+              tarefa: doc.data().tarefa, //Adicionando a tarefa do documento na lista
+              userUid: doc.data().userUid, //Adicionando o id do usuário do documento na lista
+            });
+          });
+       
+          setTarefas(listaTarefas); //Setando a lista de tarefas no useState tarefas}
+      });
     }
-    
-    loadTarefas();   //Chamando a função getTarefas
+  }
+    loadTarefas(); //Chamando a função getTarefas
   }, []);
 
+  async function handleRegister(e) {
+    //Função para registrar a tarefa no localStorage ao clicar no botão com onSubmit
+    e.preventDefault(); //Prevenindo o comportamento padrão do formulário pois não queremos que a página seja recarregada
 
-  async function handleRegister(e) {     //Função para registrar a tarefa no localStorage ao clicar no botão com onSubmit
-    e.preventDefault();   //Prevenindo o comportamento padrão do formulário pois não queremos que a página seja recarregada
-
-    if (tarefaInput === "") {   //Se o input de tarefa estiver vazio, exibe um alerta pedindo para preencher o campo
+    if (tarefaInput === "") {
+      //Se o input de tarefa estiver vazio, exibe um alerta pedindo para preencher o campo
       alert("Preencha o campo de tarefa!");
       return;
     }
 
-    await addDoc(collection(db, "tarefas"), {   //addDoc é um método que adiciona um documento a uma coleção
-      tarefa: tarefaInput,   //Adicionando a tarefa no documento
-      created: new Date(),   //Adicionando a data de criação da tarefa no documento
-      userUid: user?.uid,   //Adicionando o id do usuário no documento, se vier vazio?, não adiciona nada e não dá erro 
+    await addDoc(collection(db, "tarefas"), {
+      //addDoc é um método que adiciona um documento a uma coleção
+      tarefa: tarefaInput, //Adicionando a tarefa no documento
+      created: new Date(), //Adicionando a data de criação da tarefa no documento
+      userUid: user?.uid, //Adicionando o id do usuário no documento, se vier vazio?, não adiciona nada e não dá erro
     })
-    .then(() => {
-      console.log("Tarefa registrada com sucesso!");
-      setTarefaInput("");
-    })
-    .catch((error) => {
-      console.log("Erro ao registrar tarefa" + error);
-    });
+      .then(() => {
+        console.log("Tarefa registrada com sucesso!");
+        setTarefaInput("");
+      })
+      .catch((error) => {
+        console.log("Erro ao registrar tarefa" + error);
+      });
   }
 
-  async function handleLogout() {   //Função para deslogar o usuário ao clicar no botão de sair
-    await signOut(auth);    //signOut é um método que des
-    }
+  async function handleLogout() {
+    //Função para deslogar o usuário ao clicar no botão de sair
+    await signOut(auth); //signOut é um método que des
+  }
 
   return (
     <div className="admin-container">
@@ -56,21 +94,23 @@ export default function Admin() {
           onChange={(e) => setTarefaInput(e.target.value)}
         />
 
-        <button className="btn-register" type="submit">Registrar tarefa</button>
+        <button className="btn-register" type="submit">
+          Registrar tarefa
+        </button>
       </form>
 
       <article className="list">
         <p>Estudar javascript e reactjs hoje a noite.</p>
 
         <div>
-            <button className="btn-edit">Editar</button>
-            <button className="btn-delete">Concluir</button>
+          <button className="btn-edit">Editar</button>
+          <button className="btn-delete">Concluir</button>
         </div>
       </article>
 
-      <button className="btn-logout" onClick={handleLogout}>Sair</button>
-
-
+      <button className="btn-logout" onClick={handleLogout}>
+        Sair
+      </button>
     </div>
   );
 }
