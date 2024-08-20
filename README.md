@@ -1,70 +1,56 @@
-# Getting Started with Create React App
+## Firebase - Projeto do Curso React JS Udemy
+Este projeto foi desenvolvido durante o curso React JS do zero ao avançado na prática na Udemy: https://www.udemy.com/course/curso-reactjs/ 
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Funcionalidades
+- Integração com o Firebase.
+- Edição do banco.
+- Exclusão do banco.
+- Controle de acessos.
+- Autenticação de Usuários: Login e cadastro com email e senha.
 
-## Available Scripts
 
-In the project directory, you can run:
+## Rodando a Aplicação Localmente
 
-### `npm start`
+Siga estas instruções para executar o projeto na sua máquina:
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+Pré-requisitos
+Node.js e npm instalados. Verifique a versão com node -v e npm -v.
+Um gerenciador de pacotes como yarn ou npm.
+Uma conta Firebase configurada com um projeto.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## Passo a Passo
 
-### `npm test`
+Clone o Repositório.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
 
-### `npm run build`
+## Instale as Dependências:
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+npm install
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+ou
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+yarn install
 
-### `npm run eject`
+## Configure o Firebase:
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+Crie um arquivo .env na raiz do projeto.
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+Copie as configurações do seu projeto Firebase (apiKey, authDomain, etc.) para o arquivo .env.
+Exemplo:
+REACT_APP_FIREBASE_API_KEY=YOUR_API_KEY
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+## Inicie o Servidor:
 
-## Learn More
+npm start
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+ou
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+yarn start
 
-### Code Splitting
+Isso iniciará o servidor de desenvolvimento. Acesse o projeto em seu navegador: http://localhost:3000
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+Observações
+Este projeto utiliza o Firestore como banco de dados. Certifique-se de ter as regras de segurança configuradas corretamente no seu projeto Firebase.
+O código fonte é fornecido como está, sem garantia de qualquer tipo.
+Adapte o arquivo .env.example para .env e coloque as suas credenciais do firebase.
