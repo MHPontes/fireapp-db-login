@@ -7,6 +7,8 @@ import {
   query,
   orderBy,
   where,
+  doc,
+  deleteDoc,
 } from "firebase/firestore";
 import { signOut } from "firebase/auth";
 import "./admin.css";
@@ -80,7 +82,13 @@ export default function Admin() {
 
   async function handleLogout() {
     //Função para deslogar o usuário ao clicar no botão de sair
-    await signOut(auth); //signOut é um método que des
+    await signOut(auth); //signOut é um método que desloga o usuário
+  }
+
+  async function deleteTarefa(id) {
+    //Função para deletar a tarefa ao clicar no botão de concluir
+    const docRef = doc(db, "tarefas", id); //Referência do documento que será deletado
+    await deleteDoc(docRef) //deleteDoc é um método que deleta um documento
   }
 
   return (
@@ -99,14 +107,17 @@ export default function Admin() {
         </button>
       </form>
 
-      <article className="list">
-        <p>Estudar javascript e reactjs hoje a noite.</p>
-
+      {tarefas.map((item) => (
+        //Mapeando a lista de tarefas para exibir na tela
+        <article key={item.id} className="list">     
+          <p>{item.tarefa}</p>
+  
         <div>
           <button className="btn-edit">Editar</button>
-          <button className="btn-delete">Concluir</button>
+          <button onClick={() => deleteTarefa(item.id) }className="btn-delete">Concluir</button>
         </div>
       </article>
+      ))}
 
       <button className="btn-logout" onClick={handleLogout}>
         Sair
